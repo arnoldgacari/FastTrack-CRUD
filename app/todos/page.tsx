@@ -1,5 +1,14 @@
 import { createClient } from '@/lib/supabase/server'
 
+// Opt this specific dynamic route out of strict instant prerender validation
+export const instant = false;
+
+interface Todo {
+  id: number
+  task: string
+  created_at: string
+}
+
 export default async function TodosPage() {
   const supabase = await createClient()
 
@@ -14,7 +23,7 @@ export default async function TodosPage() {
     <div className="max-w-xl mx-auto p-8 font-sans">
       <h1 className="text-3xl font-bold mb-6">SupaDash Tasks</h1>
       <ul className="space-y-3">
-        {todos?.map((item) => (
+        {(todos as Todo[] | null)?.map((item: Todo) => (
           <li key={item.id} className="p-4 border rounded-lg shadow-sm flex items-center justify-between">
             <span>{item.task}</span>
             <span className="text-xs text-gray-500">
